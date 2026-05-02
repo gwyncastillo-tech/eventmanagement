@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Login</title>
+
+<style>
+    body {
+        font-family: Arial;
+        background-color: #8f8f8f;
+    }
+
+.container {
+    width: 350px;
+    margin: 100px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    text-align: center;
+
+    transition: transform 0.2s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+    h2 {
+        color: #c0392b;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button, input[type="submit"] {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 95%;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #c0392b;
+    }
+
+    .secondary-btn {
+        background-color: #7f8c8d;
+    }
+
+    .secondary-btn:hover {
+        background-color: #555;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+{% if success %}
+
+<h2>
+    WELCOME {{ success|upper }}
+    {% if type == 0 %}(Responder){% endif %}
+</h2>
+
+<br>
+
+<!-- ✅ USER BUTTON -->
+{% if type == 1 %}
+<a href="{% url 'createEmergency' %}">
+    <button>Create Emergency</button>
+</a>
+<br><br>
+
+<a href="{% url 'myEmergencies' %}">
+    <button>My Emergencies</button>
+</a>
+
+<br><br>
+
+{% endif %}
+
+<!-- ✅ RESPONDER BUTTON -->
+{% if type == 0 %}
+<a href="{% url 'responderDashboard' %}">
+    <button>Responder Dashboard</button>
+</a>
+<br><br>
+{% endif %}
+
+<a href="{% url 'editProfile' %}">
+    <button>Edit Profile</button>
+</a>
+
+<br><br>
+
+<a href="{% url 'logout' %}">
+    <button class="secondary-btn">Logout</button>
+</a>
+
+{% else %}
+
+<h2>HelpNow</h2>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Username">
+    <input type="password" name="password" placeholder="Password">
+
+    <input type="submit" value="Login">
+</form>
+
+<br>
+
+<a href="{% url 'register' %}">
+    <button class="secondary-btn">Register</button>
+</a>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

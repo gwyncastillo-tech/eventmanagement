@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Responder Dashboard</title>
+
+<style>
+body {
+    font-family: Arial;
+    background-color: #8f8f8f;
+
+    /* ✅ CENTER CONTENT */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 500px;
+    max-height: 90vh;       /* prevents overflow */
+    overflow-y: auto;       /* scroll if too many cards */
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+.back-btn {
+    background-color: #7f8c8d;
+}
+
+.back-btn:hover {
+    background-color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Emergency Dashboard</h2>
+
+{% if emergencies %}
+
+    {% for e in emergencies %}
+    <div class="card">
+        <strong>{{ e.title }}</strong><br>
+        {{ e.description }}<br>
+
+        Status: <b>{{ e.status }}</b>
+
+        <br><br>
+
+        <!-- 🔥 STEP 1: DISPATCH BUTTON -->
+        {% if e.status == "Pending" %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ e.emergencyID }}">
+            <input type="hidden" name="action" value="dispatch">
+            <button type="submit">Dispatch</button>
+        </form>
+        {% endif %}
+
+        <!-- 🔥 STEP 2: COMPLETE BUTTON -->
+        {% if e.status == "Dispatched" %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ e.emergencyID }}">
+            <input type="hidden" name="action" value="complete">
+            <button type="submit">Mark as Completed</button>
+        </form>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+
+{% else %}
+    <p>No emergencies yet.</p>
+{% endif %}
+
+<br>
+
+<a href="{% url 'loginUser' %}">
+    <button type="button" class="back-btn">Back</button>
+</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Emergencies</title>
+
+<style>
+body {
+    font-family: Arial;
+    background-color: #8f8f8f;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 500px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin: 15px 0;  /* increase spacing */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>My Emergency Requests</h2>
+
+{% if emergencies %}
+    {% for e in emergencies %}
+    <div class="card">
+        <strong>{{ e.title }}</strong><br>
+        {{ e.description }}<br>
+
+        Status:
+        {% if e.status == "Pending" %}
+            <span style="color: red;">Pending</span>
+        {% elif e.status == "Dispatched" %}
+            <span style="color: orange;">On the way</span>
+        {% elif e.status == "Completed" %}
+            <span style="color: green;">Completed</span>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No emergencies created yet.</p>
+{% endif %}
+
+<br>
+
+<a href="{% url 'loginUser' %}">
+    <button>Back</button>
+</a>
+
+</div>
+
+</body>
+</html>
